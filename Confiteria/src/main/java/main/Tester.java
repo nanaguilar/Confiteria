@@ -1,28 +1,62 @@
 package main;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import modelo.Dulce;
-import servicio.Servicio;
-import servicio.ServicioDulce;
 
 public class Tester {
 
+	private static EntityManager em = null;
+	private static EntityManagerFactory entityManagerFactory = null;
+
 	public static void main(String[] args) {
-		// Inicializar la EntityManagerFactory
-		Servicio.startEntityManagerFactory("Confiteria");
+		try {
+			System.out.println("Iniciando");
+			startEntityManagerFactory("Confiteria");
 
-		// Crear una instancia de ServicioDulce
-		ServicioDulce servicioDulce = new ServicioDulce();
+			em = entityManagerFactory.createEntityManager();
 
-		// Crear un nuevo dulce (Create)
-		Dulce nuevoDulce = new Dulce();
-		nuevoDulce.setNombre("Lindor");
-		nuevoDulce.setCantidad(6);
-		nuevoDulce.setPrecio(2500);
+			em.getTransaction().begin();
 
-		servicioDulce.crearDulce(nuevoDulce);
-		System.out.println("Dulce creado: " + nuevoDulce);
+			Dulce nuevoDulce = new Dulce();
+			nuevoDulce.setNombre("Lindor");
+			nuevoDulce.setCantidad(6);
+			nuevoDulce.setPrecio(2500);
 
-		// Cerrar la EntityManagerFactory
-		Servicio.stopEntityManagerFactory();
+			em.persist(nuevoDulce);
+			em.getTransaction().commit();
+
+			stopEntityManagerFactory();
+			System.out.println("Finalizado");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void startEntityManagerFactory(String persistenceUnit) throws Exception {
+		if (entityManagerFactory == null) {
+			try {
+				entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnit);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void stopEntityManagerFactory() throws Exception {
+		if (entityManagerFactory != null) {
+			if (entityManagerFactory.isOpen()) {
+				try {
+					entityManagerFactory.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			entityManagerFactory = null;
+		}
 	}
 }

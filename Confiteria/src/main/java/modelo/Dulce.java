@@ -1,16 +1,17 @@
 package modelo;
 
 import java.io.Serializable;
-import java.lang.Integer;
-import java.lang.String;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Entity implementation class for Entity: Dulce
  *
  */
+
 @Entity
-@Table(name = "dulce")
 
 public class Dulce implements Serializable {
 
@@ -24,7 +25,7 @@ public class Dulce implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Dulce() {
-		super();
+
 	}
 
 	public Integer getId() {

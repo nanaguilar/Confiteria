@@ -1,9 +1,10 @@
 package modelo;
 
 import java.io.Serializable;
-import java.lang.Integer;
-import java.lang.String;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Entity implementation class for Entity: Usuario
@@ -11,7 +12,6 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "Usuario")
 
 public class Usuario implements Serializable {
 
@@ -26,7 +26,6 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Usuario() {
-		super();
 	}
 
 	public Integer getId() {
