@@ -1,6 +1,9 @@
 package servicio;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
+
 import modelo.Dulce;
 
 public class ServicioDulce extends Servicio {
@@ -15,6 +18,13 @@ public class ServicioDulce extends Servicio {
 			e.printStackTrace();
 		}
 	}
+	
+    public List<Dulce> listarDulces() {
+        startTransaction();  
+        List<Dulce> dulce = em.createQuery("SELECT d FROM Dulce d", Dulce.class).getResultList(); 
+        em.close();
+        return dulce; 
+    }
 
 	public Dulce leerDulce(Integer id) {
 		startTransaction();
@@ -23,14 +33,16 @@ public class ServicioDulce extends Servicio {
 		return dulce;
 	}
 
-	public void actualizarDulce(Dulce dulce) {
+	public boolean actualizarDulce(Dulce dulce) {
 		startTransaction();
 		try {
 			em.merge(dulce);
 			commitTransaction();
+			return true;
 		} catch (Exception e) {
 			rollbackTransaction();
 			e.printStackTrace();
+			return false;
 		}
 	}
 
