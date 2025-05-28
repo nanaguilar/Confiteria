@@ -18,13 +18,13 @@ public class ServicioDulce extends Servicio {
 			e.printStackTrace();
 		}
 	}
-	
-    public List<Dulce> listarDulces() {
-        startTransaction();  
-        List<Dulce> dulce = em.createQuery("SELECT d FROM Dulce d", Dulce.class).getResultList(); 
-        em.close();
-        return dulce; 
-    }
+
+	public List<Dulce> listarDulces() {
+		startTransaction();
+		List<Dulce> dulce = em.createQuery("SELECT d FROM Dulce d", Dulce.class).getResultList();
+		em.close();
+		return dulce;
+	}
 
 	public Dulce leerDulce(Integer id) {
 		startTransaction();
@@ -59,6 +59,20 @@ public class ServicioDulce extends Servicio {
 		} catch (Exception e) {
 			rollbackTransaction();
 			e.printStackTrace();
+		}
+	}
+
+	public boolean existeDulcePorNombre(String nombre) {
+		try {
+			startTransaction();
+			List<Dulce> resultado = em.createQuery("SELECT d FROM Dulce d WHERE LOWER(d.Nombre) = :nombre", Dulce.class)
+					.setParameter("nombre", nombre.toLowerCase()).getResultList();
+			em.close();
+			return !resultado.isEmpty();
+		} catch (Exception e) {
+			em.close();
+			e.printStackTrace();
+			return false;
 		}
 	}
 }
